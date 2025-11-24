@@ -555,7 +555,56 @@ window.addEventListener('scroll', debouncedScrollHandler);
  * Initialize all functionality when DOM is loaded
  */
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Portfolio website initialized');
+  const THEME_KEY = 'harns_theme';
+  const themeBtn = document.getElementById('toggle-theme');
+  const themeIcon = document.getElementById('theme-icon');
+
+  function updateThemeUI(theme) {
+    const isDark = theme === 'dark';
+    document.documentElement.classList.toggle('dark-theme', isDark);
+    if (themeBtn) themeBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+    if (themeIcon) themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+  }
+
+  // persistent apply
+  function applyTheme(theme) {
+    localStorage.setItem(THEME_KEY, theme);
+    updateThemeUI(theme);
+  }
+
+  // init from storage or system
+  const storedTheme = localStorage.getItem(THEME_KEY) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  updateThemeUI(storedTheme);
+
+  // existing click toggle (keeps previous behavior)
+  themeBtn?.addEventListener('click', () => {
+    const current = document.documentElement.classList.contains('dark-theme') ? 'dark' : 'light';
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  // hover preview: mouseenter enables dark preview; mouseleave restores stored theme
+  const hoverBtn = document.querySelector('.hover-theme-btn');
+  hoverBtn?.addEventListener('mouseenter', () => {
+    // preview dark mode only (do not persist)
+    document.documentElement.classList.add('dark-theme');
+    if (themeIcon) themeIcon.className = 'fas fa-sun';
+    hoverBtn.setAttribute('aria-pressed', 'true');
+  });
+  hoverBtn?.addEventListener('mouseleave', () => {
+    // restore persisted theme
+    const persisted = localStorage.getItem(THEME_KEY) || 'light';
+    updateThemeUI(persisted);
+  });
+
+  // touch/click fallback for mobile: long-press not reliable, use click to toggle persistent theme
+  hoverBtn?.addEventListener('touchstart', (e) => {
+    // prevent double-activation with click
+    e.preventDefault();
+    const current = document.documentElement.classList.contains('dark-theme') ? 'dark' : 'light';
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  }, {passive: false});
+
+  console.log('Portfolio website initialized');
     
     // Initialize all features
     initScrollAnimations();

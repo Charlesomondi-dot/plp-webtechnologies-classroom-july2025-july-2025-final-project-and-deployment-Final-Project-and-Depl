@@ -46,6 +46,22 @@
         </div>
     </nav>
 
+    <!-- Accessibility toolbar -->
+    <div class="accessibility-bar" aria-label="Accessibility controls" role="region">
+        <div class="accessibility-group" role="toolbar" aria-label="Zoom and theme controls">
+            <button id="zoom-out" class="acc-btn" aria-label="Decrease text size">A-</button>
+            <button id="zoom-reset" class="acc-btn" aria-label="Reset text size">A</button>
+            <button id="zoom-in" class="acc-btn" aria-label="Increase text size">A+</button>
+
+            <button id="toggle-contrast" class="acc-btn" aria-pressed="false" aria-label="Toggle high contrast">HC</button>
+
+            <button id="toggle-theme" class="acc-btn hover-theme-btn" aria-pressed="false" aria-label="Toggle dark / light mode">
+              <i id="theme-icon" class="fas fa-moon" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div id="acc-status" class="visually-hidden" aria-live="polite" aria-atomic="true">Accessibility settings applied</div>
+    </div>
+    
     <!-- Hero Section -->
     <main>
         <section class="hero">
@@ -95,7 +111,7 @@
                         <span class="stat-description">Successful web & mobile apps</span>
                     </div>
                     <div class="stat-item">
-                        <h3 class="stat-number" data-target="3">0</h3>
+                        <h3 class="stat-number" data-target="5">0</h3>
                         <p class="stat-label">Years Experience</p>
                         <span class="stat-description">In software development</span>
                     </div>
